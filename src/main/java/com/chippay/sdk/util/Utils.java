@@ -157,7 +157,10 @@ public class Utils {
     public static Map<String, String> initKey() throws Exception {
         KeyPairGenerator keygen = KeyPairGenerator.getInstance("RSA");
         SecureRandom secrand = new SecureRandom();
-        secrand.setSeed("initSeed".getBytes());
+        // 下面setSeed，是額外加入一些熵（多混進一些亂數），可以使用也可以拿掉這行．是安全加分行為，但不是必要，因為SecureRandom 本身已經是安全的
+        // byte[] manualSeed = new byte[32];
+        // new SecureRandom().nextBytes(manualSeed); // 手動生一組種子
+        // secrand.setSeed(manualSeed); // 混進去
         keygen.initialize(1024, secrand);
         KeyPair keys = keygen.genKeyPair();
         byte[] pub_key = keys.getPublic().getEncoded();
